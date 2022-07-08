@@ -44,3 +44,13 @@ export async function blockCard(req: Request, res: Response) {
 
   return res.sendStatus(200)
 }
+
+export async function unblockCard(req: Request, res: Response) {
+  const card: cardRepository.CardUpdateData = res.locals.card
+
+  await cardService.updateCard(card.id, {
+    isBlocked: false,
+  })
+
+  return res.sendStatus(200)
+}
