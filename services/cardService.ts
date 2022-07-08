@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker"
 
 import * as cardRepository from "../repositories/cardRepository.js"
 import { addAndFormatDate } from "../utils/addDateAndFormat.js"
-import { encryptPassword } from "../utils/encryptPassword.js"
+import { encryptSecurityCode } from "../utils/encryptPassword.js"
 import { formatEmployeeName } from "../utils/formatEmployeeName.js"
 
 export async function createCard(
@@ -32,7 +32,8 @@ function createCardData(
   const cardNumber = faker.finance.creditCardNumber()
   const cardholderName = formatEmployeeName(employeeFullName)
   const securityCode = faker.finance.creditCardCVV()
-  const hashSecurityCode = encryptPassword(securityCode)
+  console.log("🚀 ~ securityCode", securityCode)
+  const hashSecurityCode = encryptSecurityCode(securityCode)
   const expirationDate = addAndFormatDate(5, "years", "MM/YY")
   const isBlocked = false
 
@@ -47,6 +48,21 @@ function createCardData(
     originalCardId,
     isBlocked,
     type: cardType,
+  }
+
+  return cardData
+}
+
+export async function updateCard(
+  id: number,
+  cardData: cardRepository.CardUpdateData,
+) {
+  cardRepository.update(id, cardData)
+}
+
+export function createUpdateCardData(cardKeys: cardRepository.CardUpdateData) {
+  const cardData: cardRepository.CardUpdateData = {
+    password: cardKeys.password,
   }
 
   return cardData
