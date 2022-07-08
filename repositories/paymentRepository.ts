@@ -25,10 +25,10 @@ export async function findByCardId(cardId: number) {
   return result.rows
 }
 
-export async function insert(paymentData: PaymentInsertData) {
+export function insert(paymentData: PaymentInsertData) {
   const { cardId, businessId, amount } = paymentData
 
-  db.query<any, [number, number, number]>(
+  return db.query<any, [number, number, number]>(
     `INSERT INTO payments ("cardId", "businessId", amount) VALUES ($1, $2, $3)`,
     [cardId, businessId, amount],
   )

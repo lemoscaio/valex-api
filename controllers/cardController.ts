@@ -32,7 +32,8 @@ export async function getEmployeeCards(req: Request, res: Response) {
 export async function getCardBalanceAndStatements(req: Request, res: Response) {
   const cardId = +req.query.cardId
 
-  const cardBalanceAndStatements = await cardService.gatherCardDetails(cardId)
+  const cardBalanceAndStatements =
+    await cardService.gatherCardBalanceAndStatements(cardId)
 
   return res.send(cardBalanceAndStatements)
 }

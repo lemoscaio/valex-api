@@ -7,7 +7,7 @@ export async function ensureCardIsNotBlocked(
 ) {
   const card: { isBlocked: boolean } = res.locals.card
 
-  if (card.isBlocked) throw { status: 400, message: "Card already blocked" }
+  if (card.isBlocked) throw { status: 400, message: "The card is blocked" }
 
   next()
 }

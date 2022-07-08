@@ -63,7 +63,7 @@ export async function updateCard(
   cardRepository.update(id, cardData)
 }
 
-export async function gatherCardDetails(cardId: number) {
+export async function gatherCardBalanceAndStatements(cardId: number) {
   interface cardBalanceAndStatements {
     balance: number
     transactions: paymentRepository.PaymentWithBusinessName[]
