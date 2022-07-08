@@ -89,14 +89,14 @@ export function calculateCardBalance(
 ) {
   const totalRecharge = recharges.reduce(
     (acc: number, current: { amount: number }) => {
-      return current.amount
+      return acc + current.amount
     },
     0,
   )
 
   const totalSpent = payments.reduce(
     (acc: number, current: { amount: number }) => {
-      return current.amount
+      return acc + current.amount
     },
     0,
   )
