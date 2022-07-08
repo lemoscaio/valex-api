@@ -63,14 +63,6 @@ export async function updateCard(
   cardRepository.update(id, cardData)
 }
 
-export function createUpdateCardData(cardKeys: cardRepository.CardUpdateData) {
-  const cardData: cardRepository.CardUpdateData = {
-    password: cardKeys.password,
-  }
-
-  return cardData
-}
-
 export async function gatherCardDetails(cardId: number) {
   interface cardBalanceAndStatements {
     balance: number

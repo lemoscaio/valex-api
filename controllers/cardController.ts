@@ -18,9 +18,8 @@ export async function setCardPassword(req: Request, res: Response) {
   const { password }: { password: string } = req.body
 
   const hashPassword = encryptPassword(password)
-  const cardData = cardService.createUpdateCardData({ password: hashPassword })
 
-  await cardService.updateCard(card.id, cardData)
+  await cardService.updateCard(card.id, { password: hashPassword })
 
   return res.sendStatus(200)
 }
@@ -35,4 +34,13 @@ export async function getCardBalanceAndStatements(req: Request, res: Response) {
   const cardBalanceAndStatements = await cardService.gatherCardDetails(cardId)
 
   return res.send(cardBalanceAndStatements)
+}
+export async function blockCard(req: Request, res: Response) {
+  const card: cardRepository.CardUpdateData = res.locals.card
+
+  await cardService.updateCard(card.id, {
+    isBlocked: true,
+  })
+
+  return res.sendStatus(200)
 }
