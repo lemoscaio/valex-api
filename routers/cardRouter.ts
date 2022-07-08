@@ -52,9 +52,9 @@ cardRouter.put(
   "/cards/block",
   validateSchema(blockCardSchema),
   ensureCardExists,
+  validateCardPassword,
   ensureCardIsNotExpired,
   ensureCardIsNotBlocked,
-  validateCardPassword,
   blockCard,
 )
 
