@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 
 import * as cardRepository from "../repositories/cardRepository.js"
 import * as cardService from "../services/cardService.js"
+import * as rechargeService from "../services/rechargeService.js"
 import { encryptPassword } from "../utils/encryptPassword.js"
 
 export async function createCard(req: Request, res: Response) {
@@ -35,6 +36,7 @@ export async function getCardBalanceAndStatements(req: Request, res: Response) {
 
   return res.send(cardBalanceAndStatements)
 }
+
 export async function blockCard(req: Request, res: Response) {
   const card: cardRepository.CardUpdateData = res.locals.card
 
@@ -51,6 +53,15 @@ export async function unblockCard(req: Request, res: Response) {
   await cardService.updateCard(card.id, {
     isBlocked: false,
   })
+
+  return res.sendStatus(200)
+}
+
+export async function rechargeCard(req: Request, res: Response) {
+  const card: cardRepository.CardUpdateData = res.locals.card
+  const amount: number = req.body.amount
+
+  await rechargeService.rechargeCarge(card.id, amount)
 
   return res.sendStatus(200)
 }

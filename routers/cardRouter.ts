@@ -5,11 +5,13 @@ import {
   createCard,
   getCardBalanceAndStatements,
   getEmployeeCards,
+  rechargeCard,
   setCardPassword,
   unblockCard,
 } from "../controllers/cardController.js"
 import { authenticateApiKey } from "../middlewares/authMiddleware.js"
 import { ensureCardExists } from "../middlewares/ensureCardExists.js"
+import { ensureCardIsActivated } from "../middlewares/ensureCardIsActivated.js"
 import { ensureCardIsBlocked } from "../middlewares/ensureCardIsBlocked.js"
 import { ensureCardIsNotActivated } from "../middlewares/ensureCardIsNotActivated.js"
 import { ensureCardIsNotBlocked } from "../middlewares/ensureCardIsNotBlocked.js"
@@ -22,6 +24,7 @@ import { validateSchema } from "../middlewares/validateSchema.js"
 import { activateCardSchema } from "../schemas/activateCardSchema.js"
 import { blockCardSchema } from "../schemas/blockCardSchema.js"
 import { newCardSchema } from "../schemas/newCardSchema.js"
+import { rechargeSchema } from "../schemas/rechargeSchema.js"
 
 const cardRouter = Router()
 
@@ -59,7 +62,7 @@ cardRouter.put(
   ensureCardIsNotBlocked,
   blockCard,
 )
-// TODO: resolve redudancy when finishing the feature (to avoid early optimization)
+// TODO: resolve redudancy in ensureCardIsBlocked
 cardRouter.put(
   "/cards/unblock",
   validateSchema(blockCardSchema),
@@ -68,6 +71,15 @@ cardRouter.put(
   ensureCardIsNotExpired,
   ensureCardIsBlocked,
   unblockCard,
+)
+// TODO: resolve redudancy in ensureCardIsActivated
+cardRouter.post(
+  "/cards/recharge",
+  validateSchema(rechargeSchema),
+  ensureCardExists,
+  ensureCardIsActivated,
+  ensureCardIsNotExpired,
+  rechargeCard,
 )
 
 export { cardRouter }

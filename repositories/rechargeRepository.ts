@@ -17,10 +17,10 @@ export async function findByCardId(cardId: number) {
   return result.rows
 }
 
-export async function insert(rechargeData: RechargeInsertData) {
+export function insert(rechargeData: RechargeInsertData) {
   const { cardId, amount } = rechargeData
 
-  db.query<any, [number, number]>(
+  return db.query<any, [number, number]>(
     `INSERT INTO recharges ("cardId", amount) VALUES ($1, $2)`,
     [cardId, amount],
   )
