@@ -28,6 +28,11 @@ export async function setCardPassword(req: Request, res: Response) {
 export async function getEmployeeCards(req: Request, res: Response) {
   return res.sendStatus(200)
 }
+
 export async function getCardBalanceAndStatements(req: Request, res: Response) {
-  return res.sendStatus(200)
+  const cardId = +req.query.cardId
+
+  const cardBalanceAndStatements = await cardService.gatherCardDetails(cardId)
+
+  return res.send(cardBalanceAndStatements)
 }

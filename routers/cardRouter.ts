@@ -36,8 +36,12 @@ cardRouter.post(
   ensureCardIsNotActivated,
   setCardPassword,
 )
-// cardRouter.get("/cards", getEmployeeCards)
+cardRouter.get("/cards", getEmployeeCards)
 
-// cardRouter.get("/card-statements?:cardId", getCardBalanceAndStatements)
+cardRouter.get(
+  "/card-statements?:cardId",
+  ensureCardExists,
+  getCardBalanceAndStatements,
+)
 
 export { cardRouter }

@@ -1,6 +1,9 @@
 import { faker } from "@faker-js/faker"
 
 import * as cardRepository from "../repositories/cardRepository.js"
+import * as paymentRepository from "../repositories/paymentRepository.js"
+import * as rechargeRepository from "../repositories/rechargeRepository.js"
+
 import { addAndFormatDate } from "../utils/addDateAndFormat.js"
 import { encryptSecurityCode } from "../utils/encryptPassword.js"
 import { formatEmployeeName } from "../utils/formatEmployeeName.js"
@@ -66,4 +69,45 @@ export function createUpdateCardData(cardKeys: cardRepository.CardUpdateData) {
   }
 
   return cardData
+}
+
+export async function gatherCardDetails(cardId: number) {
+  interface cardBalanceAndStatements {
+    balance: number
+    transactions: paymentRepository.PaymentWithBusinessName[]
+    recharges: rechargeRepository.Recharge[]
+  }
+
+  const cardPayments = await paymentRepository.findByCardId(cardId)
+  const cardRecharges = await rechargeRepository.findByCardId(cardId)
+  const cardBalance = calculateCardBalance(cardPayments, cardRecharges)
+
+  const cardBalanceAndStatements = {
+    balance: cardBalance,
+    transactions: cardPayments,
+    recharges: cardRecharges,
+  }
+
+  return cardBalanceAndStatements
+}
+
+export function calculateCardBalance(
+  payments: paymentRepository.PaymentWithBusinessName[],
+  recharges: rechargeRepository.Recharge[],
+) {
+  const totalRecharge = recharges.reduce(
+    (acc: number, current: { amount: number }) => {
+      return current.amount
+    },
+    0,
+  )
+
+  const totalSpent = payments.reduce(
+    (acc: number, current: { amount: number }) => {
+      return current.amount
+    },
+    0,
+  )
+
+  return totalRecharge - totalSpent
 }

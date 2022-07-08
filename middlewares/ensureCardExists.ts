@@ -7,7 +7,7 @@ export async function ensureCardExists(
   res: Response,
   next: NextFunction,
 ) {
-  const { cardId }: { cardId: number } = req.body
+  const cardId: number = req.body.cardId || req.query.cardId
 
   const card = await cardRepository.findById(cardId)
   console.log("🚀 ~ card", card)
