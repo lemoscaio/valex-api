@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 import * as cardRepository from "../repositories/cardRepository.js"
 import * as cardService from "../services/cardService.js"
 import * as rechargeService from "../services/rechargeService.js"
-import { encryptPassword } from "../utils/encryptPassword.js"
+import { security } from "../utils/encryptionFunctions.js"
 
 export async function createCard(req: Request, res: Response) {
   const { cardType }: { cardType: cardRepository.TransactionTypes } = req.body
@@ -18,7 +18,7 @@ export async function setCardPassword(req: Request, res: Response) {
   const card: cardRepository.CardUpdateData = res.locals.card
   const { password }: { password: string } = req.body
 
-  const hashPassword = encryptPassword(password)
+  const hashPassword = security.encryptPassword(password)
 
   await cardService.updateCard(card.id, { password: hashPassword })
 

@@ -3,20 +3,27 @@ import bcrypt from "bcrypt"
 
 const cryptr = new Cryptr(process.env.CRYPTR_KEY)
 
-export function encryptSecurityCode(password: string) {
+function encryptSecurityCode(password: string) {
   return cryptr.encrypt(password)
 }
 
-export function encryptPassword(password: string) {
+function encryptPassword(password: string) {
   const saltRounds = 10
   return bcrypt.hashSync(password, saltRounds)
 }
 
-export function decryptSecurityCode(encryptedSecurityCode: string) {
+function decryptSecurityCode(encryptedSecurityCode: string) {
   return cryptr.decrypt(encryptedSecurityCode)
 }
 
-export function decryptPassword(password: string, encryptedPassword: string) {
+function decryptPassword(password: string, encryptedPassword: string) {
   const comparedPassword = bcrypt.compareSync(password, encryptedPassword)
   return comparedPassword
+}
+
+export const security = {
+  encryptSecurityCode,
+  encryptPassword,
+  decryptSecurityCode,
+  decryptPassword,
 }
