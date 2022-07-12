@@ -1,4 +1,4 @@
-import express from "express"
+import express, { Request, Response } from "express"
 import "express-async-errors"
 import cors from "cors"
 import dotenv from "dotenv"
@@ -11,6 +11,7 @@ const App = express()
 App.use(express.json())
 App.use(cors())
 
+App.get("/", (req: Request, res: Response) => res.send("Online"))
 App.use(Routers)
 
 App.use(handleError)
