@@ -24,6 +24,12 @@ export async function createCard(
     cardType,
   )
 
+  const { cleanSecurityCode, ...cleanCardData } = {
+    ...cardData,
+    securityCode: cardData.cleanSecurityCode,
+  }
+  delete cardData.cleanSecurityCode
+
   const createdCard = await cardRepository.insert(cardData)
 
   if (createdCard.rowCount === 0) {
@@ -32,6 +38,8 @@ export async function createCard(
       message: "Something went wrong",
     }
   }
+
+  return cleanCardData
 }
 
 async function createCardData(
@@ -60,6 +68,7 @@ async function createCardData(
     originalCardId,
     isBlocked,
     type: cardType,
+    cleanSecurityCode: securityCode,
   }
 
   return cardData

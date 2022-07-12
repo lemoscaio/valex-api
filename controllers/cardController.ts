@@ -10,9 +10,9 @@ export async function createCard(req: Request, res: Response) {
   const { cardType }: { cardType: cardRepository.TransactionTypes } = req.body
   const employee: employeeRepository.Employee = res.locals.employee
 
-  await cardService.createCard(employee, cardType)
+  const createdCardData = await cardService.createCard(employee, cardType)
 
-  return res.sendStatus(201)
+  return res.status(201).send(createdCardData)
 }
 
 export async function setCardPassword(req: Request, res: Response) {
