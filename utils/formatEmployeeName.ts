@@ -17,5 +17,5 @@ export function formatEmployeeName(fullName: string) {
   )
 
   console.log(formattedName)
-  return formattedName.trim()
+  return formattedName.trim().toUpperCase()
 }
