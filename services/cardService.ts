@@ -3,14 +3,19 @@ import { faker } from "@faker-js/faker"
 import * as cardRepository from "../repositories/cardRepository.js"
 import * as paymentRepository from "../repositories/paymentRepository.js"
 import * as rechargeRepository from "../repositories/rechargeRepository.js"
+import * as employeeRepository from "../repositories/employeeRepository.js"
 import { createAndVerifyUniqueCardNumber } from "../utils/createAndVerifyUniqueCardNumber.js"
 
 import { getNowAddAndFormatDate } from "../utils/dateFunctions.js"
 import { security } from "../utils/encryptionFunctions.js"
 import { formatEmployeeName } from "../utils/formatEmployeeName.js"
 
+export interface InsertResult {
+  rowCount: number
+}
+
 export async function createCard(
-  employee: { id: number; fullName: string },
+  employee: employeeRepository.Employee,
   cardType: cardRepository.TransactionTypes,
 ) {
   const cardData = await createCardData(
@@ -37,13 +42,14 @@ async function createCardData(
   isVirtual: boolean = false,
   originalCardId: number = null,
 ) {
-  const cardNumber = await createAndVerifyUniqueCardNumber()
+  const cardNumber: string = await createAndVerifyUniqueCardNumber()
   const cardholderName = formatEmployeeName(employeeFullName)
   const securityCode = faker.finance.creditCardCVV()
-  console.log("🚀 ~ securityCode", securityCode)
   const hashSecurityCode = security.encryptSecurityCode(securityCode)
   const expirationDate = getNowAddAndFormatDate(5, "years", "MM/YY")
-  const isBlocked = false
+  const isBlocked: boolean = false
+
+  console.log("🚀 ~ securityCode", securityCode)
 
   const cardData = {
     employeeId,
@@ -65,7 +71,7 @@ export async function updateCard(
   id: number,
   cardData: cardRepository.CardUpdateData,
 ) {
-  cardRepository.update(id, cardData)
+  await cardRepository.update(id, cardData)
 }
 
 export async function gatherCardBalanceAndStatements(cardId: number) {

@@ -1,7 +1,13 @@
 import { NextFunction, Request, Response } from "express"
 
+interface Error {
+  status?: number
+  message?: string
+  details?: [{ message: string }]
+}
+
 export function handleError(
-  error: any,
+  error: Error,
   req: Request,
   res: Response,
   next: NextFunction,

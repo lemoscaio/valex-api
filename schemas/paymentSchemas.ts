@@ -9,7 +9,7 @@ export const paymentSchema = Joi.object({
 
 export const onlinePaymentSchema = Joi.object({
   cardNumber: Joi.string().required(),
-  cardHolderName: Joi.string().required(),
+  cardholderName: Joi.string().required(),
   cardExpirationDate: Joi.string()
     .pattern(/((0[1-9]|1[012])\/[0-9]{2})/)
     .required(),

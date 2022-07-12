@@ -20,7 +20,7 @@ export async function getAndPassToLocals(
 }
 
 function ensureExistance(req: Request, res: Response, next: NextFunction) {
-  const { employee } = res.locals
+  const employee: employeeRepository.Employee = res.locals.employee
 
   if (!employee) {
     throw { status: 404, message: "Employee doesn't exist" }
@@ -44,6 +44,7 @@ async function ensureHasUniqueCardType(
     cardType,
     employeeId,
   )
+
   console.log("🚀 ~ card", card)
 
   if (card) {

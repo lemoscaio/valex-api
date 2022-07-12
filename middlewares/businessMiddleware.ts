@@ -19,7 +19,7 @@ async function getAndPassToLocals(
 }
 
 function ensureExistance(req: Request, res: Response, next: NextFunction) {
-  const { business } = res.locals
+  const business: businessRepository.Business = res.locals.business
 
   if (!business) {
     throw { status: 404, message: "Business not registered" }
@@ -33,7 +33,7 @@ function ensureMatchesCardType(
   res: Response,
   next: NextFunction,
 ) {
-  const card: cardRepository.CardUpdateData = res.locals.card
+  const card: cardRepository.Card = res.locals.card
   const business: businessRepository.Business = res.locals.business
 
   if (card.type !== business.type)

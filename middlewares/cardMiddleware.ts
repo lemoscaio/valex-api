@@ -10,7 +10,7 @@ async function getAndPassToLocals(
   res: Response,
   next: NextFunction,
 ) {
-  let card: {}
+  let card: cardRepository.Card
 
   if (req.body.cardId || req.query.cardId) {
     const cardId: number = req.body.cardId || req.query.cardId
@@ -26,12 +26,12 @@ async function getAndPassToLocals(
     card = await cardRepository.findById(cardId)
   } else if (req.body.cardNumber) {
     const cardNumber: string = req.body.cardNumber
-    const cardHolderName: string = req.body.cardHolderName
+    const cardholderName: string = req.body.cardholderName
     const cardExpirationDate: string = req.body.cardExpirationDate
 
     card = await cardRepository.findByCardDetails(
       cardNumber,
-      cardHolderName,
+      cardholderName,
       cardExpirationDate,
     )
   }
@@ -44,7 +44,7 @@ async function getAndPassToLocals(
 }
 
 function ensureExistance(req: Request, res: Response, next: NextFunction) {
-  const { card } = res.locals
+  const card: cardRepository.Card = res.locals.card
 
   if (!card) {
     throw { status: 404, message: "Card doesn't exist" }
@@ -55,7 +55,7 @@ function ensureExistance(req: Request, res: Response, next: NextFunction) {
 
 function ensureIsNotExpired(req: Request, res: Response, next: NextFunction) {
   console.log("ensureCardIsNotExpired")
-  const card: { expirationDate: string } = res.locals.card
+  const card: cardRepository.Card = res.locals.card
 
   const expirationMonth = card.expirationDate.slice(0, 2)
   const expirationYear = card.expirationDate.slice(3, 5)
@@ -73,7 +73,7 @@ function ensureIsNotExpired(req: Request, res: Response, next: NextFunction) {
 }
 
 function validateSecurityCode(req: Request, res: Response, next: NextFunction) {
-  const card: { securityCode: string } = res.locals.card
+  const card: cardRepository.Card = res.locals.card
   const { securityCode }: { securityCode: string } = req.body
 
   const decryptedCode = security.decryptSecurityCode(card.securityCode)
@@ -84,7 +84,7 @@ function validateSecurityCode(req: Request, res: Response, next: NextFunction) {
 }
 
 function ensureIsNotActivated(req: Request, res: Response, next: NextFunction) {
-  const card: { password: string } = res.locals.card
+  const card: cardRepository.Card = res.locals.card
 
   if (card.password) throw { status: 400, message: "Card already activated" }
 
@@ -92,7 +92,7 @@ function ensureIsNotActivated(req: Request, res: Response, next: NextFunction) {
 }
 
 function ensureIsActivated(req: Request, res: Response, next: NextFunction) {
-  const card: { password: string } = res.locals.card
+  const card: cardRepository.Card = res.locals.card
 
   if (!card.password) throw { status: 400, message: "Card is not activated" }
 
@@ -101,7 +101,7 @@ function ensureIsActivated(req: Request, res: Response, next: NextFunction) {
 
 function validatePassword(req: Request, res: Response, next: NextFunction) {
   console.log("validateCardPassword")
-  const card: { password: string } = res.locals.card
+  const card: cardRepository.Card = res.locals.card
   const password: string = req.body.password
 
   const decryptedPassword = security.decryptPassword(password, card.password)
@@ -112,7 +112,7 @@ function validatePassword(req: Request, res: Response, next: NextFunction) {
 }
 
 function ensureIsNotBlocked(req: Request, res: Response, next: NextFunction) {
-  const card: { isBlocked: boolean } = res.locals.card
+  const card: cardRepository.Card = res.locals.card
 
   if (card.isBlocked) throw { status: 400, message: "The card is blocked" }
 
@@ -120,7 +120,7 @@ function ensureIsNotBlocked(req: Request, res: Response, next: NextFunction) {
 }
 
 function ensureIsBlocked(req: Request, res: Response, next: NextFunction) {
-  const card: { isBlocked: boolean } = res.locals.card
+  const card: cardRepository.Card = res.locals.card
 
   if (!card.isBlocked) throw { status: 400, message: "The card is unblocked" }
 
@@ -128,7 +128,7 @@ function ensureIsBlocked(req: Request, res: Response, next: NextFunction) {
 }
 
 function ensureIsNotVirtual(req: Request, res: Response, next: NextFunction) {
-  const card: { isVirtual: boolean } = res.locals.card
+  const card: cardRepository.Card = res.locals.card
 
   if (card.isVirtual)
     throw { status: 400, message: "This card is a virtual card" }
@@ -137,7 +137,7 @@ function ensureIsNotVirtual(req: Request, res: Response, next: NextFunction) {
 }
 
 function ensureIsVirtual(req: Request, res: Response, next: NextFunction) {
-  const card: { isVirtual: boolean } = res.locals.card
+  const card: cardRepository.Card = res.locals.card
 
   if (!card.isVirtual)
     throw { status: 400, message: "This card is not a virtual card" }

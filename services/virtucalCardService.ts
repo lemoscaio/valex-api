@@ -5,8 +5,11 @@ import { createAndVerifyUniqueCardNumber } from "../utils/createAndVerifyUniqueC
 import { getNowAddAndFormatDate } from "../utils/dateFunctions.js"
 import { security } from "../utils/encryptionFunctions.js"
 
-export async function createVirtualCard(card, password: string) {
-  const cardData = await createVirtualCardData(
+export async function createVirtualCard(
+  card: cardRepository.Card,
+  password: string,
+) {
+  const cardData: cardRepository.CardInsertData = await createVirtualCardData(
     card.employeeId,
     card.cardholderName,
     card.type,
@@ -32,13 +35,13 @@ async function createVirtualCardData(
   password: string = null,
   originalCardId: number = null,
 ) {
-  const cardNumber = await createAndVerifyUniqueCardNumber()
+  const cardNumber: string = await createAndVerifyUniqueCardNumber()
   const securityCode = faker.finance.creditCardCVV()
   console.log("🚀 ~ securityCode", securityCode)
   const hashSecurityCode = security.encryptSecurityCode(securityCode)
   const hashPassword = security.encryptPassword(password)
   const expirationDate = getNowAddAndFormatDate(5, "years", "MM/YY")
-  const isBlocked = false
+  const isBlocked: boolean = false
 
   const cardData = {
     employeeId,

@@ -1,4 +1,5 @@
 import db from "../config/database.js"
+import { InsertResult } from "../services/cardService.js"
 import { mapObjectToUpdateQuery } from "../utils/sqlUtils.js"
 
 export type TransactionTypes =

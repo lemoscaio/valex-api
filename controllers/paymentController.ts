@@ -13,7 +13,7 @@ export async function insertPayment(req: Request, res: Response) {
   }
 
   await paymentService.checkIfCardBalanceIsPositive(card.id, amount)
-
   await paymentService.insertNewPayment({ cardId: card.id, businessId, amount })
+
   res.sendStatus(200)
 }
