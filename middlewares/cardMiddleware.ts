@@ -52,7 +52,6 @@ function ensureExistance(req: Request, res: Response, next: NextFunction) {
 }
 
 function ensureIsNotExpired(req: Request, res: Response, next: NextFunction) {
-  console.log("ensureCardIsNotExpired")
   const card: cardRepository.Card = res.locals.card
 
   const expirationMonth = card.expirationDate.slice(0, 2)

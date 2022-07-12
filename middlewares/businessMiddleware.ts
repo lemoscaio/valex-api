@@ -11,7 +11,6 @@ async function getAndPassToLocals(
   const businessId: number = req.body.businessId
 
   const business = await businessRepository.findById(businessId)
-  console.log("🚀 ~ business", business)
 
   res.locals.business = business
 
