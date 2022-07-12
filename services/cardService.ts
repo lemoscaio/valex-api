@@ -49,8 +49,6 @@ async function createCardData(
   const expirationDate = getNowAddAndFormatDate(5, "years", "MM/YY")
   const isBlocked: boolean = false
 
-  console.log("🚀 ~ securityCode", securityCode)
-
   const cardData = {
     employeeId,
     number: cardNumber,

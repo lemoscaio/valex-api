@@ -36,8 +36,6 @@ async function getAndPassToLocals(
     )
   }
 
-  console.log("🚀 ~ card", card)
-
   res.locals.card = card
 
   next()
@@ -100,7 +98,6 @@ function ensureIsActivated(req: Request, res: Response, next: NextFunction) {
 }
 
 function validatePassword(req: Request, res: Response, next: NextFunction) {
-  console.log("validateCardPassword")
   const card: cardRepository.Card = res.locals.card
   const password: string = req.body.password
 

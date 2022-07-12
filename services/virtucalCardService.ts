@@ -16,7 +16,6 @@ export async function createVirtualCard(
     password,
     card.id,
   )
-  console.log("🚀 ~ cardData", cardData)
 
   const createdCard = await cardRepository.insert(cardData)
 
@@ -37,7 +36,6 @@ async function createVirtualCardData(
 ) {
   const cardNumber: string = await createAndVerifyUniqueCardNumber()
   const securityCode = faker.finance.creditCardCVV()
-  console.log("🚀 ~ securityCode", securityCode)
   const hashSecurityCode = security.encryptSecurityCode(securityCode)
   const hashPassword = security.encryptPassword(password)
   const expirationDate = getNowAddAndFormatDate(5, "years", "MM/YY")

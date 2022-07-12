@@ -10,7 +10,6 @@ export async function authenticateApiKey(
   const apiKey: string = req.header("x-api-key")
 
   const company = await companyRepository.findByApiKey(apiKey)
-  console.log("🚀 ~ company", company)
 
   if (!company) {
     throw { status: 401, message: "Wrong API Key" }
