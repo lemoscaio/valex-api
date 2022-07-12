@@ -74,6 +74,7 @@ cardRouter.put(
 cardRouter.post(
   "/cards/recharge",
   validateSchema(rechargeSchema),
+  authenticateApiKey,
   card.getAndPassToLocals,
   card.ensureExistance,
   card.ensureIsNotVirtual,
