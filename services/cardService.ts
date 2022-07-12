@@ -3,6 +3,7 @@ import { faker } from "@faker-js/faker"
 import * as cardRepository from "../repositories/cardRepository.js"
 import * as paymentRepository from "../repositories/paymentRepository.js"
 import * as rechargeRepository from "../repositories/rechargeRepository.js"
+import { createAndVerifyUniqueCardNumber } from "../utils/createAndVerifyUniqueCardNumber.js"
 
 import { getNowAddAndFormatDate } from "../utils/dateFunctions.js"
 import { security } from "../utils/encryptionFunctions.js"
@@ -12,7 +13,11 @@ export async function createCard(
   employee: { id: number; fullName: string },
   cardType: cardRepository.TransactionTypes,
 ) {
-  const cardData = createCardData(employee.id, employee.fullName, cardType)
+  const cardData = await createCardData(
+    employee.id,
+    employee.fullName,
+    cardType,
+  )
 
   const createdCard = await cardRepository.insert(cardData)
 
@@ -24,7 +29,7 @@ export async function createCard(
   }
 }
 
-function createCardData(
+async function createCardData(
   employeeId: number,
   employeeFullName: string,
   cardType: cardRepository.TransactionTypes,
@@ -32,12 +37,12 @@ function createCardData(
   isVirtual: boolean = false,
   originalCardId: number = null,
 ) {
-  const cardNumber = faker.finance.creditCardNumber()
+  const cardNumber = await createAndVerifyUniqueCardNumber()
   const cardholderName = formatEmployeeName(employeeFullName)
   const securityCode = faker.finance.creditCardCVV()
   console.log("🚀 ~ securityCode", securityCode)
   const hashSecurityCode = security.encryptSecurityCode(securityCode)
-  const expirationDate = getNowAddAndFormatDate(5, "years", "sMM/YY")
+  const expirationDate = getNowAddAndFormatDate(5, "years", "MM/YY")
   const isBlocked = false
 
   const cardData = {

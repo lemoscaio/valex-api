@@ -16,6 +16,7 @@ import { ensureCardIsBlocked } from "../middlewares/ensureCardIsBlocked.js"
 import { ensureCardIsNotActivated } from "../middlewares/ensureCardIsNotActivated.js"
 import { ensureCardIsNotBlocked } from "../middlewares/ensureCardIsNotBlocked.js"
 import { ensureCardIsNotExpired } from "../middlewares/ensureCardIsNotExpired.js"
+import { ensureCardIsNotVirtual } from "../middlewares/ensureCardIsNotVirtual.js"
 import { ensureEmployeeExists } from "../middlewares/ensureEmployeeExists.js"
 import { ensureEmployeeHasUniqueType } from "../middlewares/ensureEmployeeHasUniqueType.js"
 import { validateCardPassword } from "../middlewares/validateCardPassword.js"
@@ -36,6 +37,7 @@ cardRouter.post(
   ensureEmployeeHasUniqueType,
   createCard,
 )
+
 cardRouter.post(
   "/activate-card",
   validateSchema(activateCardSchema),
@@ -80,6 +82,7 @@ cardRouter.post(
   validateSchema(rechargeSchema),
   authenticateApiKey,
   ensureCardExists,
+  ensureCardIsNotVirtual,
   ensureCardIsActivated,
   ensureCardIsNotExpired,
   rechargeCard,

@@ -8,6 +8,10 @@ export async function insertPayment(req: Request, res: Response) {
   const { businessId, amount }: { businessId: number; amount: number } =
     req.body
 
+  if (card.isVirtual) {
+    card.id = card.originalCardId
+  }
+
   await paymentService.checkIfCardBalanceIsPositive(card.id, amount)
 
   await paymentService.insertNewPayment({ cardId: card.id, businessId, amount })
