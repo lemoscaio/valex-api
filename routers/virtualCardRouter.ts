@@ -19,7 +19,6 @@ virtualCardRouter.post(
   createVirtualCard,
 )
 
-// TODO this schema is equal to the newVirtualCardSchema
 virtualCardRouter.delete(
   "/virtual-cards",
   validateSchema(deleteVirtualCardschema),

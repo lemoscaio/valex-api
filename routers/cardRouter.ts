@@ -59,7 +59,7 @@ cardRouter.put(
   card.ensureIsNotBlocked,
   blockCard,
 )
-// TODO: resolve redudancy in ensureCardIsBlocked
+
 cardRouter.put(
   "/cards/unblock",
   validateSchema(blockCardSchema),
@@ -71,7 +71,7 @@ cardRouter.put(
   card.ensureIsBlocked,
   unblockCard,
 )
-// TODO: resolve redudancy in ensureCardIsActivated
+
 cardRouter.post(
   "/cards/recharge",
   validateSchema(rechargeSchema),
