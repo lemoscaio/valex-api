@@ -25,10 +25,6 @@ export async function setCardPassword(req: Request, res: Response) {
   return res.sendStatus(200)
 }
 
-export async function getEmployeeCards(req: Request, res: Response) {
-  return res.sendStatus(200)
-}
-
 export async function getCardBalanceAndStatements(req: Request, res: Response) {
   const cardId = +req.query.cardId
 
