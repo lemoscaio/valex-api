@@ -25,6 +25,7 @@ cardRouter.post(
   authenticateApiKey,
   employee.getAndPassToLocals,
   employee.ensureExistance,
+  employee.ensureIsFromCompany,
   employee.ensureHasUniqueCardType,
   createCard,
 )

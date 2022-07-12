@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express"
 
 import * as employeeRepository from "../repositories/employeeRepository.js"
 import * as cardRepository from "../repositories/cardRepository.js"
+import * as companyRepository from "../repositories/companyRepository.js"
 
 export async function getAndPassToLocals(
   req: Request,
@@ -25,6 +26,7 @@ function ensureExistance(req: Request, res: Response, next: NextFunction) {
   if (!employee) {
     throw { status: 404, message: "Employee doesn't exist" }
   }
+  console.log("🚀 ~ employee", employee)
 
   next()
 }
@@ -57,10 +59,22 @@ async function ensureHasUniqueCardType(
   next()
 }
 
+function ensureIsFromCompany(req: Request, res: Response, next: NextFunction) {
+  const employee: employeeRepository.Employee = res.locals.employee
+  const company: companyRepository.Company = res.locals.company
+
+  if (employee.companyId !== company.id) {
+    throw { status: 404, message: "This employee is from a different company" }
+  }
+
+  next()
+}
+
 const employee = {
   getAndPassToLocals,
   ensureExistance,
   ensureHasUniqueCardType,
+  ensureIsFromCompany,
 }
 
 export { employee }
