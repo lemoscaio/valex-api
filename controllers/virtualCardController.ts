@@ -16,4 +16,6 @@ export async function deleteVirtualCard(req: Request, res: Response) {
   const card: cardRepository.Card = res.locals.card
 
   await cardRepository.remove(card.id)
+
+  res.send(204)
 }
